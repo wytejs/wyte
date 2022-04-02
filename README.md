@@ -1,4 +1,4 @@
-// Include image from url: 
+![Wyte](https://raw.githubusercontent.com/wytejs/wyte/main/wyte.svg)
 
 # wyte
  Wyte is the easiest tool for creating Server Side Rendering Apps
