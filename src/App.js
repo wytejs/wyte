@@ -1,8 +1,11 @@
 const Server = require('./Server')
+const Stack = require('./Stack')
+const { EventEmitter } = require('events')
 
 class App {
     constructor (config = {}) {
         this.config = config
+        this.events = new EventEmitter()
 
         if (!this.config.secret) {
             // Log in yellow text: [WARNING] No secret provided, using default secret instead
@@ -11,9 +14,17 @@ class App {
         }
 
         this.Server = new Server(config)
+        this.Stack = new Stack(this)
     }
 
     listen (port = 8080, callback = () => { console.log('\u001B[36m[Wyte] Server started\x1b[0m') }) {
+        // Initialize the stack
+        this.Stack.initialize()
+
+        // 404 Not Found
+        this.events.emit('initialize404Route')
+
+        // Listen on the port
         this.Server.listen(port, callback)
     }
 
@@ -38,10 +49,12 @@ class App {
     }
 
     notFound (callback) {
-        this.Server.expressApp.get('*', (req, res) => {
-            // Set status code to 404
-            res.status(404)
-            callback(req, res)
+        this.events.on('initialize404Route', () => {
+            this.Server.expressApp.get('*', (req, res) => {
+                // Set status code to 404
+                res.status(404)
+                callback(req, res)
+            })
         })
     }
 }
