@@ -65,6 +65,11 @@ const Vanilla = {
                     return ''
                 })
 
+                data = data.replace(/<WYTE( *?)STATUS="(\d*?)"( *)(\/|)>/g, function (match, ws1, code) {
+                    res.status(code)
+                    return ''
+                })
+
                 // Render
                 data = renderEngine(data, req, res)
 
