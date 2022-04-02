@@ -1,0 +1,30 @@
+{
+  "name": "wyte",
+  "version": "1.0.0",
+  "description": "Wyte is the easiest tool for creating Server Side Rendering Apps",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wytejs/wyte.git"
+  },
+  "keywords": [
+    "wyte",
+    "ssr",
+    "server-side-rendering",
+    "wytejs",
+    "wyte.js"
+  ],
+  "author": "greencoder001",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wytejs/wyte/issues"
+  },
+  "homepage": "https://github.com/wytejs/wyte#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "express-session": "^1.17.2"
+  }
+}
