@@ -1,5 +1,6 @@
 const express = require('express')
 const session = require('express-session')
+const cookieParser = require('cookie-parser')
 
 class Server {
     constructor (config) {
@@ -20,6 +21,8 @@ class Server {
             resave: false,
             saveUninitialized: true
         }))
+
+        this.expressApp.use(cookieParser())
     }
 
     listen (port, callback = () => {}) {

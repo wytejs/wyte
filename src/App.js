@@ -1,5 +1,7 @@
 const Server = require('./Server')
 const Stack = require('./Stack')
+const path = require('path')
+const fs = require('fs')
 const { EventEmitter } = require('events')
 
 class App {
@@ -122,6 +124,50 @@ class App {
                 callback(req, res)
             })
         })
+    }
+
+    /**
+     * @description Adds a Wyte middleware to the stack
+     * @param {Function} mw The Wyte middleware to be added to the stack
+     * @returns {Object} An object containing a ready property which is a function that takes a callback as an argument and is called when the middleware is ready
+     * @example
+     * app.use(require('@wyte/socket.io')).ready((io) => console.log(io))
+    */
+    use (middleware) {
+        this.Stack.use(middleware)
+    }
+
+    /**
+     * @discussion Servers files from the specified path
+     * @param {String} path Path to directory with static files
+     */
+    static (path) {
+        this.useMiddleware(require('express').static(path))
+    }
+
+    /**
+     * Automatically serves files from the ./frontend directory
+     * @param {Object} templateEngine Template engine to use (e.g. Wyte.Vanilla)
+     */
+    serve (templateEngine) {
+        // Serve files from the frontend/static directory
+        this.static(path.join('frontend', 'static'))
+
+        // Serve & Render files from the frontend/routes directory
+        // List every file in the directory
+        const routes = templateEngine.readRoutesDir()
+        const routesPath = templateEngine.readRoutesDirWithFullPath()
+        const routesName = templateEngine.readRoutesDirOnlyURIPath()
+
+        for (const route of routes) {
+            const index = routes.indexOf(route)
+            const routePath = routesPath[index]
+            const routeName = routesName[index]
+
+            this.get(routeName, (req, res) => {
+                templateEngine.render(routePath, req, res)
+            })
+        }
     }
 }
 
