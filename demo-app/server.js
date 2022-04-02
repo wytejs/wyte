@@ -17,6 +17,10 @@ app.Stack.use(function (app, fireReadyEvent) {
     })
 })
 
+app.passive('/', (req) => {
+    console.log('\u001B[36m[Wyte] Route accessed\x1b[0m')
+})
+
 app.get('/', (req, res) => {
     res.send('Hello World!')
 })

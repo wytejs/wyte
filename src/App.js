@@ -48,6 +48,26 @@ class App {
         this.Server.expressApp.use(middleware)
     }
 
+    /**
+     * @description Is called when route is accessed by client. IMPORTANT: .passive() won't give you the ability to use res
+     * @param {String} path Route path
+     * @param {Function} callback Callback when route is called
+     */
+    passive (path, callback) {
+        this.useMiddleware((req, res, next) => {
+            const parsedPath = req.path.replace(/:(.*?)($|\/)/g, function (match, paramId) {
+                return req.params[paramId]
+            })
+
+            if (parsedPath === path) {
+                callback(req)
+                next()
+            } else {
+                next()
+            }
+        })
+    }
+
     notFound (callback) {
         this.events.on('initialize404Route', () => {
             this.Server.expressApp.get('*', (req, res) => {
