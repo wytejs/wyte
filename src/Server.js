@@ -23,6 +23,16 @@ class Server {
         }))
 
         this.expressApp.use(cookieParser())
+
+        this.expressApp.use((req, res, next) => {
+            req.remoteAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+            next()
+        })
+
+        this.expressApp.use(function (req, res, next) {
+            req.root = req.protocol + '://' + req.get('host')
+            next()
+        })
     }
 
     listen (port, callback = () => {}) {
