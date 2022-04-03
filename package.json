@@ -1,6 +1,6 @@
 {
   "name": "wyte",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Wyte is the easiest tool for creating Server Side Rendering Apps",
   "main": "main.js",
   "scripts": {
